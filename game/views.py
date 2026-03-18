@@ -239,5 +239,3 @@ def solve_board(request):
         return JsonResponse({"solution": board})
 
 
-def home(request):
-    return HttpResponse("Sudoku Game is Live 🎉")
