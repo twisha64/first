@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sudoku Game</title>
+    {% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+        }
+
+        .top-bar {
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .info-box {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        #sudoku {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(9, 45px);
+            gap: 2px;
+            background: white;
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        .cell {
+            width: 45px;
+            height: 45px;
+            text-align: center;
+            font-size: 20px;
+            border: 1px solid #ccc;
+        }
+
+        .fixed {
+            background: #eee;
+            font-weight: bold;
+        }
+
+        .correct {
+            background: #b7f7b7;
+        }
+
+        .wrong {
+            background: #f7b7b7;
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #5563d6;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="top-bar">
+    <div class="info-box" id="timer">Time: 00:00</div>
+    <div class="info-box" id="score">Score: {{ score }}</div>
+    <div class="info-box" id="hint-count">Hints left: {{ hints_left }}</div>
+</div>
+
+<div id="sudoku"></div>
+
+<div class="controls">
+    <button class="primary" onclick="checkSolution()">Check</button>
+    <button class="primary" onclick="useHint()">Hint</button>
+    <button class="primary" onclick="clearBoard()">Clear</button>
+    <button class="primary" onclick="newGame()">New Game</button>
+    <button class="primary" onclick="window.location.href='/dashboard/'">
+        Dashboard
+    </button>
+    <button onclick="solveSudoku()">Solve</button>
+
+</div>
+
+<script>
+const board = {{ board|safe }};
+</script>
+
+<div id="sudoku"></div>
+
+<script>
+    const board = {{ board|safe }};
+</script>
+
+<script src="{% static 'script.js' %}"></script>
+
+</body>
+</html>
