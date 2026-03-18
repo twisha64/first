@@ -7,6 +7,7 @@ from .sudoku import generate_sudoku
 from .models import GameScore
 import json
 from .solver import solve
+from django.http import HttpResponse
 
 # ===============================
 # DASHBOARD
@@ -236,3 +237,7 @@ def solve_board(request):
         board = json.loads(request.POST.get("board"))
         solve(board)
         return JsonResponse({"solution": board})
+
+
+def home(request):
+    return HttpResponse("Sudoku Game is Live 🎉")
