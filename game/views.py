@@ -74,30 +74,33 @@ def logout_view(request):
 def home(request):
     level = request.GET.get("level", "easy")
 
-    puzzle, solution = generate_sudoku(level=level)
+    # ONLY create new game if not already running
+    if "puzzle" not in request.session or request.GET.get("new") == "1":
+        puzzle, solution = generate_sudoku(level=level)
 
+        request.session["puzzle"] = puzzle
+        request.session["solution"] = solution
+        request.session["score"] = 0
+        request.session["hints_left"] = 3
+        request.session["level"] = level
+        request.session.modified = True
+    else:
+        puzzle = request.session["puzzle"]
+
+    # Highscore
     highscore = None
     if request.user.is_authenticated:
         best = GameScore.objects.filter(user=request.user).order_by("-score").first()
         if best:
             highscore = best.score
 
-    request.session["puzzle"] = puzzle
-    request.session["solution"] = solution
-    request.session["score"] = 0
-    request.session["hints_left"] = 3
-    request.session["level"] = level
-    request.session.modified = True
-
     return render(request, "index.html", {
         "board": puzzle,
-        "hints_left": 3,
-        "score": 0,
+        "hints_left": request.session.get("hints_left", 3),
+        "score": request.session.get("score", 0),
         "highscore": highscore,
-        "level": level
+        "level": request.session.get("level", level)
     })
-
-
 # ===============================
 # CHECK SOLUTION
 # ===============================
