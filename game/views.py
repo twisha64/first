@@ -9,9 +9,12 @@ import json
 from .solver import solve
 from django.http import HttpResponse
 
-# ===============================
-# DASHBOARD
-# ===============================
+
+def create_admin(request):
+    if not User.objects.filter(username="admin").exists():
+        User.objects.create_superuser("admin", "admin@gmail.com", "admin123")
+        return HttpResponse("Admin created")
+    return HttpResponse("Admin already exists")
 def dashboard(request):
     if not request.user.is_authenticated:
         return redirect("login")
